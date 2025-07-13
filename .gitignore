@@ -1,7 +1,6 @@
 ### 本地配置 ###
 application-local.yml
 
-README.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
