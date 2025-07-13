@@ -35,6 +35,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+        <!--langchain4j-rag-->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-easy-rag</artifactId>
+            <version>${langchain4j.verison}</version>
+        </dependency>
         <!--langchain4j-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -44,7 +50,7 @@
         <!--langchain4j-springboot-starter-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
+            <artifactId>langchain4j-spring-boot-starter</artifactId>
             <version>${langchain4j.verison}</version>
         </dependency>
         <dependency>

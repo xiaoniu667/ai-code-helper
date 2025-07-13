@@ -37,14 +37,14 @@ public class QwenChat {
         return aiMessage.text();
     }
 
-    //TODO
-    public String userChartMemory(String message) {
-        MessageWindowChatMemory messageWindowChatMemory = MessageWindowChatMemory.withMaxMessages(5);
-        ConversationalChain chain = ConversationalChain.builder()
-                .chatLanguageModel(qwenChatModel)
-                .chatMemory(messageWindowChatMemory)
-                .build();
-        return chain.execute(message);
-    }
+//    //TODO
+//    public String userChartMemory(String message) {
+//        MessageWindowChatMemory messageWindowChatMemory = MessageWindowChatMemory.withMaxMessages(5);
+//        ConversationalChain chain = ConversationalChain.builder()
+//                .chatLanguageModel(qwenChatModel)
+//                .chatMemory(messageWindowChatMemory)
+//                .build();
+//        return chain.execute(message);
+//    }
 
 }
