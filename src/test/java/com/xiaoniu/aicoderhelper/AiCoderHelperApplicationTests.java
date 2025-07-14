@@ -49,5 +49,17 @@ class AiCoderHelperApplicationTests {
         System.out.println(result);
     }
 
+    @Test
+    void userChatWithTools() {
+        String result = aiServiceHelper.userChat("你好，牛站有哪些视频?");
+        System.out.println(result);
+    }
+
+    @Test
+    void userChatWithMcp() {
+        String result = aiServiceHelper.userChat("你好，什么是牛站");
+        System.out.println(result);
+    }
+
 
 }

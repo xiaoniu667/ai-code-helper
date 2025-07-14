@@ -10,3 +10,6 @@ spring:
 #      chat-model:
 #        api-key: ""
 #        model-name: "qwen-plus"
+
+#bigmodel:
+#  api-key: ""

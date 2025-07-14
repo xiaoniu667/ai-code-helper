@@ -2,6 +2,7 @@ package com.xiaoniu.aicoderhelper.ai.config;
 
 
 import com.xiaoniu.aicoderhelper.ai.AiServiceHelper;
+import com.xiaoniu.aicoderhelper.ai.tools.NiuZhanTools;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.splitter.DocumentByParagraphSplitter;
@@ -18,6 +19,7 @@ import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.query.transformer.CompressingQueryTransformer;
 import dev.langchain4j.rag.query.transformer.QueryTransformer;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.tool.ToolProvider;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
@@ -40,6 +42,9 @@ public class AIServiceHelperBuilder {
 
     @Resource
     private ChatLanguageModel qwenChatModel;
+
+    @Resource
+    private ToolProvider mcpToolProvider;
 
     @Bean
     public AiServiceHelper aiServiceHelper() {
@@ -77,9 +82,11 @@ public class AIServiceHelperBuilder {
 
         MessageWindowChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         return AiServices.builder(AiServiceHelper.class)
-                .chatMemory(chatMemory)
+                .chatMemory(chatMemory)   //回话记忆
                 .chatLanguageModel(qwenChatModel)
-                .retrievalAugmentor(retrievalAugmentor)
+                .retrievalAugmentor(retrievalAugmentor) //rag
+                .tools(new NiuZhanTools()) //工具调用
+                .toolProvider(mcpToolProvider) //mcp调用
                 .build();
     }
 
