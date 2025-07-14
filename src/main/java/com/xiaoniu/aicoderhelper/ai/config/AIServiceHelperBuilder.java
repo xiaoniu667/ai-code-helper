@@ -42,6 +42,8 @@ public class AIServiceHelperBuilder {
 
     @Resource
     private ChatLanguageModel qwenChatModel;
+    @Resource
+    private ChatLanguageModel myQwenChatModel;
 
     @Resource
     private ToolProvider mcpToolProvider;
@@ -83,7 +85,7 @@ public class AIServiceHelperBuilder {
         MessageWindowChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         return AiServices.builder(AiServiceHelper.class)
                 .chatMemory(chatMemory)   //回话记忆
-                .chatLanguageModel(qwenChatModel)
+                .chatLanguageModel(myQwenChatModel)
                 .retrievalAugmentor(retrievalAugmentor) //rag
                 .tools(new NiuZhanTools()) //工具调用
                 .toolProvider(mcpToolProvider) //mcp调用
