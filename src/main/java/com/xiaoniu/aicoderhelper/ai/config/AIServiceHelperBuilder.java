@@ -6,12 +6,11 @@ import com.xiaoniu.aicoderhelper.ai.tools.NiuZhanTools;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.splitter.DocumentByParagraphSplitter;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.embedding.onnx.bgesmallenv15q.BgeSmallEnV15QuantizedEmbeddingModel;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.RetrievalAugmentor;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
@@ -41,12 +40,19 @@ import java.util.List;
 public class AIServiceHelperBuilder {
 
     @Resource
-    private ChatLanguageModel qwenChatModel;
+    private ChatModel qwenChatModel;
+
     @Resource
-    private ChatLanguageModel myQwenChatModel;
+    private ChatModel myQwenChatModel;
+
+    @Resource
+    private StreamingChatModel qwenStreamingChatModel;
 
     @Resource
     private ToolProvider mcpToolProvider;
+
+    @Resource
+    private EmbeddingModel qwenEmbeddingModel;
 
     @Bean
     public AiServiceHelper aiServiceHelper() {
@@ -55,13 +61,12 @@ public class AIServiceHelperBuilder {
         //2.将文件内容分片，并且转为embedding的向量
         //300：表示每个文档片段的最大长度（以字符或标记为单位，具体取决于实现）。
         //0：表示片段之间的重叠长度（overlap），这里设置为0，意味着片段之间没有重叠。
-        EmbeddingModel embeddingModel = new BgeSmallEnV15QuantizedEmbeddingModel();
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         //分段切割
         DocumentByParagraphSplitter documentByParagraphSplitter = new DocumentByParagraphSplitter(300,100);
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .documentSplitter(documentByParagraphSplitter)
-                .embeddingModel(embeddingModel)
+                .embeddingModel(qwenEmbeddingModel)
                 .embeddingStore(embeddingStore)
                 .build();
         ingestor.ingest(documents);
@@ -70,7 +75,7 @@ public class AIServiceHelperBuilder {
         //相似度阈值，默认为0.6
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
-                .embeddingModel(embeddingModel)
+                .embeddingModel(qwenEmbeddingModel)
                 .maxResults(5)
                 .minScore(0.6)
                 .build();
@@ -85,7 +90,10 @@ public class AIServiceHelperBuilder {
         MessageWindowChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         return AiServices.builder(AiServiceHelper.class)
                 .chatMemory(chatMemory)   //回话记忆
-                .chatLanguageModel(myQwenChatModel)
+                .chatModel(myQwenChatModel)
+                .streamingChatModel(qwenStreamingChatModel)
+                .chatMemoryProvider(memoryId ->
+                        MessageWindowChatMemory.withMaxMessages(10)) // 每个会话独立存储
                 .retrievalAugmentor(retrievalAugmentor) //rag
                 .tools(new NiuZhanTools()) //工具调用
                 .toolProvider(mcpToolProvider) //mcp调用

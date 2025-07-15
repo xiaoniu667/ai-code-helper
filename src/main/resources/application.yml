@@ -3,6 +3,10 @@ spring:
    name: ai-coder-helper
   profiles:
     active: local
+server:
+  port: 8081
+  servlet:
+    context-path: /api
 
 #langchain4j:
 #  community:
@@ -10,6 +14,9 @@ spring:
 #      chat-model:
 #        api-key: ""
 #        model-name: "qwen-plus"
-
+#      streaming-chat-model:
+#        model-name: "qwen-plus"
+#        api-key: ""
+#
 #bigmodel:
-#  api-key: ""
+#  api-key:

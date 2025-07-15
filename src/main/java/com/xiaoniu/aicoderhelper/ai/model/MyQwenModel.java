@@ -2,7 +2,7 @@ package com.xiaoniu.aicoderhelper.ai.model;
 
 
 import dev.langchain4j.community.model.dashscope.QwenChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.chat.listener.ChatModelListener;
 import jakarta.annotation.Resource;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class MyQwenModel {
 
 
     @Bean
-    public ChatLanguageModel myQwenChatModel(){
+    public ChatModel myQwenChatModel(){
         return QwenChatModel.builder()
                 .apiKey(apiKey)
                 .modelName(modelName)

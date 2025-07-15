@@ -1,13 +1,11 @@
 package com.xiaoniu.aicoderhelper.ai;
 
 
-import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ImageContent;
 import dev.langchain4j.data.message.TextContent;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class QwenChat {
 
     @Resource
-    private ChatLanguageModel qwenChatModel;
+    private ChatModel qwenChatModel;
 
     public String userChart(String message) {
         String result = qwenChatModel.chat(message);
